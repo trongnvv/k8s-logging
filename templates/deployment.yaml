@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: logging
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-echo
+  namespace: logging
+  labels:
+    {{- include "logging.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "selector.labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "selector.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: echo-pod
+        image: {{ .Values.image.repository }}
+        env:
+        - name: ECHO_VAR
+          value: "Search the world's information, including webpages, images, videos and more"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: [ "/bin/sh", "-ec", "while true; do echo $ECHO_VAR; sleep 2; done" ]
