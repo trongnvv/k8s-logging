@@ -42,8 +42,23 @@ output:
           equals:
             kubernetes.namespace: "logging"
   logstash:
-    enabled: true
+    enabled: false
     hosts: ["logstash:5044"]
+  kafka:
+    enabled: true
+    hosts: ["kafka:9092"]
+    topic: "default-logs"
+    topics:
+      - topic: "logging"
+        when.contains:
+          kubernetes.namespace: "logging"
+    partition.round_robin:
+      reachable_only: false
+
+    required_acks: 1
+    compression: gzip
+    max_message_bytes: 1000000
+
 # setup:
 #   template:
 #     name: "logging"
