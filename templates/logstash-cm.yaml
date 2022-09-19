@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-pipeline
+  labels:
+    k8s-app: logstash
+data:
+  logstash.conf: |-
+{{ (.Files.Get "conf/logstash-pipeline.conf") | indent 4 }}

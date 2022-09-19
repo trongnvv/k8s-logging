@@ -7,18 +7,16 @@ metadata:
 spec:
   selector:
     app: kibana
-  clusterIP: None
   ports:
     - port: 5601
       protocol: TCP
       targetPort: ui
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: kibana
 spec:
-  serviceName: kibana # provides association with our previously created kibana Service.
   replicas: 1
   selector:
     matchLabels:

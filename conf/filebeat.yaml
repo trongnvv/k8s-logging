@@ -31,12 +31,9 @@ filebeat:
                 paths:
                   - "/var/log/containers/${data.kubernetes.container.id}-*-${data.kubernetes.container.id}.log"
 # Send events to Logstash.
-# output.logstash:
-#   enabled: true
-#   hosts: ["logstash:9600"]
 output:
   elasticsearch:
-    enabled: true
+    enabled: false
     hosts: ["elasticsearch:9200"]
     # index: "logging-%{+yyyy.MM.dd}"
     indices:
@@ -45,8 +42,8 @@ output:
           equals:
             kubernetes.namespace: "logging"
   logstash:
-    enabled: false
-    hosts: ["logstash:9600"]
+    enabled: true
+    hosts: ["logstash:5044"]
 # setup:
 #   template:
 #     name: "logging"
